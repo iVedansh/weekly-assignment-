@@ -1,0 +1,7 @@
+class LoanReceipt { private final String memberId; private final String[] bookIds;
+ public LoanReceipt(String id,String[] ids){if(ids==null)throw new IllegalArgumentException();for(String s:ids)if(!valid(s))throw new IllegalArgumentException("Invalid book id");memberId=id;bookIds=ids.clone();}
+ private static boolean valid(String s){return s!=null&&s.length()==6&&s.startsWith("BK-")&&Character.isDigit(s.charAt(3))&&Character.isDigit(s.charAt(4))&&Character.isDigit(s.charAt(5));}
+ public String[] getBookIds(){return bookIds.clone();} public LoanReceipt withCorrectedBookId(int i,String id){if(i<0||i>=bookIds.length||!valid(id))throw new IllegalArgumentException();String[] c=bookIds.clone();c[i]=id;return new LoanReceipt(memberId,c);}
+}
+class ReferenceOnlyLoanReceipt extends LoanReceipt{private final String roomNumber;public ReferenceOnlyLoanReceipt(String id,String[] ids,String room){super(id,ids);roomNumber=room;}}
+public class Problem5{static String processNightlyCirculation(LoanReceipt[] a){int p=0,n=0,r=0,i=0;for(LoanReceipt x:a){if(x==null){n++;continue;}p++;if(x instanceof ReferenceOnlyLoanReceipt)r++;else i++;}return p+" processed | "+n+" null skipped | "+r+" reference-only | "+i+" regular";}public static void main(String[]x){System.out.println(processNightlyCirculation(new LoanReceipt[]{new ReferenceOnlyLoanReceipt("LIB-001",new String[]{"BK-200"},"Reading Room 3"),null,new LoanReceipt("LIB-002",new String[]{"BK-201"})}));}}
