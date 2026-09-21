@@ -39,11 +39,6 @@ public class Problem5_NightlyReconciliation {
         Premium(String studentId, double orderValue) {
             super(studentId, orderValue);
         }
-
-        @Override
-        final double calculateSurgeFee(int delayMinutes) {
-            return super.calculateSurgeFee(delayMinutes) * 0.5;
-        }
     }
 
     static double grandTotal;
@@ -53,10 +48,15 @@ public class Problem5_NightlyReconciliation {
             return;
         }
 
-        // The supplied amount is used as this account's reconciled order value.
         account.orderValue = amount;
-
         double fee = account.calculateSurgeFee(delayMinutes);
+
+        // Premium settlement is adjusted here while the required final
+        // surge-fee calculation remains unchanged and reusable.
+        if (account instanceof Premium) {
+            fee *= 0.5;
+        }
+
         grandTotal += fee;
 
         if (account instanceof Premium) {
