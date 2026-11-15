@@ -54,7 +54,7 @@ public class Problem1 {
 
     private static String format(double value) {
         return String.format(java.util.Locale.US, "%.2f", value)
-                .replaceAll("\\.?0+$", "");
+                .replaceAll("0+$", "").replaceAll("\\.$", "");
     }
 
     public static void main(String[] args) {
